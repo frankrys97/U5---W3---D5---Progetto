@@ -21,7 +21,7 @@ public class Event {
     private String description;
     private LocalDateTime date;
     private String location;
-    private int capacity;
+    private int maxCapacity;
 
     @JsonManagedReference
     @ManyToMany
@@ -31,15 +31,15 @@ public class Event {
     @JsonBackReference
     @ManyToMany
     @JoinTable(name = "event_organizers", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "organizer_id"))
-    private List<Organizer> organizers;
+    private List<User> organizers;
 
 
-    public Event(String name, String description, LocalDateTime date, String location, int capacity, List<Organizer> organizers) {
+    public Event(String name, String description, LocalDateTime date, String location, int maxCapacity, List<User> organizers) {
         this.name = name;
         this.description = description;
         this.date = date;
         this.location = location;
-        this.capacity = capacity;
+        this.maxCapacity = maxCapacity;
         this.organizers = organizers;
     }
 }
