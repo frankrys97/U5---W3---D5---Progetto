@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,10 +17,15 @@ public class Event {
     @Id
     @GeneratedValue
     private UUID id;
+    @Setter
     private String name;
+    @Setter
     private String description;
+    @Setter
     private LocalDateTime date;
+    @Setter
     private String location;
+    @Setter
     private int maxCapacity;
 
     @JsonManagedReference
