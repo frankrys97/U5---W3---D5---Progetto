@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -23,6 +24,9 @@ public class UserServices {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
 
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -36,7 +40,7 @@ public class UserServices {
         userRepository.findByUsername(newNormalUser.username()).ifPresent(user -> {
             throw new BadRequestException("Username already in use");
         });
-        NormalUser normalUser = new NormalUser(newNormalUser.name(), newNormalUser.surname(), newNormalUser.email(), newNormalUser.username(), newNormalUser.password());
+        NormalUser normalUser = new NormalUser(newNormalUser.name(), newNormalUser.surname(), newNormalUser.email(), newNormalUser.username(), bCryptPasswordEncoder.encode(newNormalUser.password()));
         return (NormalUser) saveUser(normalUser);
     }
 
@@ -47,7 +51,7 @@ public class UserServices {
         userRepository.findByUsername(newOrganizer.username()).ifPresent(user -> {
             throw new BadRequestException("Username already in use");
         });
-        Organizer organizer = new Organizer(newOrganizer.name(), newOrganizer.surname(), newOrganizer.email(), newOrganizer.username(), newOrganizer.password());
+        Organizer organizer = new Organizer(newOrganizer.name(), newOrganizer.surname(), newOrganizer.email(), newOrganizer.username(), bCryptPasswordEncoder.encode(newOrganizer.password()));
         return (Organizer) saveUser(organizer);
     }
 
@@ -75,7 +79,7 @@ public class UserServices {
         foundUser.setSurname(updateUser.surname());
         foundUser.setEmail(updateUser.email());
         foundUser.setUsername(updateUser.username());
-        foundUser.setPassword(updateUser.password());
+        foundUser.setPassword(bCryptPasswordEncoder.encode(updateUser.password()));
         return userRepository.save(foundUser);
     }
 
@@ -86,6 +90,10 @@ public class UserServices {
         }
         foundUser.setRole(UserRole.valueOf(newRole.role()));
         return userRepository.save(foundUser);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundExpetion("User not found"));
     }
 
 

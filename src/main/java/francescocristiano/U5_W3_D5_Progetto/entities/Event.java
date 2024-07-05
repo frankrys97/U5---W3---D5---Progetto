@@ -1,6 +1,5 @@
 package francescocristiano.U5_W3_D5_Progetto.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,7 +27,7 @@ public class Event {
     @JoinTable(name = "event_partecipants", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> partecipants;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToMany
     @JoinTable(name = "event_organizers", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "organizer_id"))
     private List<User> organizers;
