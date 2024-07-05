@@ -11,6 +11,7 @@ import francescocristiano.U5_W3_D5_Progetto.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -73,8 +74,12 @@ public class EventController {
 
     @PutMapping("/{eventId}")
     @PreAuthorize("hasAnyAuthority('ORGANIZER', 'ADMIN')")
-    public Event updateEvent(@PathVariable UUID eventId, @RequestBody @Validated NewEventDTO newEvent) {
-        return eventService.updateEvent(eventId, newEvent);
+    public Event updateEvent(@PathVariable UUID eventId, @RequestBody @Validated NewEventDTO newEvent, @AuthenticationPrincipal User user) {
+        if (user.getRole().equals(UserRole.ADMIN) || eventService.findById(eventId).getOrganizers().stream().anyMatch(organizer -> organizer.getEmail().equals(user.getEmail()))) {
+            return eventService.updateEvent(eventId, newEvent);
+        } else {
+            throw new AccessDeniedException("You are not the organizer of this event");
+        }
     }
 
     @PatchMapping("/{eventId}/cancelation")
