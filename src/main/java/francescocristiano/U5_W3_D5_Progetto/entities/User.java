@@ -1,10 +1,11 @@
 package francescocristiano.U5_W3_D5_Progetto.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import francescocristiano.U5_W3_D5_Progetto.UserRole;
+import francescocristiano.U5_W3_D5_Progetto.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,12 +18,18 @@ public abstract class User {
     @Id
     @GeneratedValue
     private UUID id;
+    @Setter
     private String name;
+    @Setter
     private String surname;
+    @Setter
     private String email;
+    @Setter
     private String username;
+    @Setter
     private String password;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private UserRole role;
 

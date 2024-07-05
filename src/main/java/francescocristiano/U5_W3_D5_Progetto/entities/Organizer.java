@@ -1,7 +1,7 @@
 package francescocristiano.U5_W3_D5_Progetto.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import francescocristiano.U5_W3_D5_Progetto.UserRole;
+import francescocristiano.U5_W3_D5_Progetto.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 
