@@ -1,5 +1,6 @@
 package francescocristiano.U5_W3_D5_Progetto.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import francescocristiano.U5_W3_D5_Progetto.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public abstract class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "partecipants")
     private List<Event> bookedEvents;
 
