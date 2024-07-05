@@ -78,7 +78,7 @@ public class EventController {
         if (user.getRole().equals(UserRole.ADMIN) || eventService.findById(eventId).getOrganizers().stream().anyMatch(organizer -> organizer.getEmail().equals(user.getEmail()))) {
             return eventService.updateEvent(eventId, newEvent);
         } else {
-            throw new AccessDeniedException("You are not the organizer of this event");
+            throw new AccessDeniedException("Access denied");
         }
     }
 
